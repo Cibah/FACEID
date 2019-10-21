@@ -1,4 +1,4 @@
-# Projektarbeit im Studiengang MOS im WS 2019/
+# Projektarbeit im Studiengang MOS im WS 2019/2020
 ## Basierend auf:
 https://github.com/ageitgey/face_recognition
 
