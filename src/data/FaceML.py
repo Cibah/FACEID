@@ -8,7 +8,7 @@ import face_recognition
 # from lib.face_recognition.docs.conf import Mock
 class FaceML:
     known_faces = []
-    path = "/home/artur/PycharmProjects/FACEID/img/known/"
+    path = ""
     time1 = datetime.now()
 
     def __init__(self, path):
