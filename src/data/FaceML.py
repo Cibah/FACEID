@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 
-import face_recognition
+import lib.face_recognition.face_recognition as face_recognition
 
 
 # Load the jpg files into numpy arrays
