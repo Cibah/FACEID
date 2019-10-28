@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
-
 import lib.face_recognition.face_recognition as face_recognition
+from src.log.Logger import logger
 
 
 # Load the jpg files into numpy arrays
@@ -18,42 +18,40 @@ class FaceML:
     def load_known_faces(self):
         time1 = datetime.now()
         if not os.path.exists(self.path):
-            print("Path not found: " + self.path)
-            exit(-1)
-        print("Loading all known faces ...")
+            logger.error("Path not found_ " + self.path)
+        logger.debug("Loading known faces")
         for face in os.listdir(self.path):
-            print("Loading face: " + face)
+            logger.debug("Loading face " + face)
             if face.endswith(".jpg"):
                 face_image = face_recognition.load_image_file(self.path + face)
                 try:
                     face_encoding = face_recognition.face_encodings(face_image)[0]
                     self.known_faces.append(face_encoding)
                 except IndexError:
-                    print(
-                        "I wasn't able to locate any faces in at least one of the images. Check the image files. "
-                        "Aborting...")
-                    quit()
-        print("Loaded all known faces: " + str(len(self.known_faces)) + " in: " + str(
+                    logger.error("No faces found in " + self.path + face)
+                except IOError:
+                    logger.error("Cant open the face file " + self.path + face)
+        logger.debug("Loaded all " + str(len(self.known_faces)) + " faces in " + str(
             datetime.now() - time1) + " seconds")
 
     def check_face(self, face):
         unknown_face_encoding = []
         time1 = datetime.now()
-        print("Loading unknown Face")
+        logger.debug("Loading unknown face")
         found = False
         try:
             unknown_image = face_recognition.load_image_file(face)
+            # TODO (artur): How to cache the image?
             unknown_face_encoding = face_recognition.face_encodings(unknown_image)[0]
         except IndexError:
-            print("I wasn't able to locate any faces in at least one of the images. Check the image files. Aborting...")
-            quit()
+            logger.error("No faces found in " + self.path + face)
         except IOError:
-            print("Cant open the file")
-            quit()
-        print("Comparing all known Faces with the unknown")
+            logger.error("Cant open the unkown face file")
+        logger.debug("Comparing the known faces with the unkown picture")
         results = face_recognition.compare_faces(self.known_faces, unknown_face_encoding)
         for result in results:
             if result:
                 found = result
-        print("Found the face? " + str(found) + " in: " + str(datetime.now() - time1) + " seconds")
+        logger.debug("Processed Faces in " + str(datetime.now() - time1) + " seconds")
+        logger.debug("Found known Face? : " + str(found))
         return found
