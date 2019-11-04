@@ -1,0 +1,40 @@
+FaceID Protokoll 31.10.2019: 13:17
+
+Anwesend: Philipp, Maik, Artur, Cochlovius
+
+Mail an Cochlovius wegen der Danalock
+Präsentation des Projektstrukturplans
+
+UDP Pakete vom Klingeln empfangen, müssen noch entschlüsselt werden.
+Doorbird könnte auch ins openHab eingebunden werden -> vorzuziehen
+
+ML
+Face Recognition dlib und openVino Vergleich
+Auch Bilder zurecht zu schneiden
+
+Referenzbilder brauchen wir lokal: auf dem Pi oder wo die Software läuft.
+Incidents für das Logging: über dropbox, oder irgendeine Mail (gmail Account oder so)
+
+Vorzeigen des Zeitplans
+
+Todo: An Integration denken!
+Todo: Python config File einlesen!
+
+Todo: Bessere Architektur Diagramme:
+Klassendiagramme
+Interfaces
+
+Todo: QR-Code usw. muss alles ins Pflichtenheft
+Todo: Anforderungen: welche sind optional ins Pflichtenheft.
+
+Qualität:
+Todo: Für jedes Modul auch einen Test definieren
+
+
+Für nächstes mal:
+Integration als eigenen Aufgabenpunkt
+Für jedes Modul Tests entwickeln zum Ausführen. Separat Testen (was bereits implementiert ist)
+Architektur Diagramme
+Pflichtenheft
+
+Fazit: Ist gut, aber mehr Projektmanagement und Test überlegen.
