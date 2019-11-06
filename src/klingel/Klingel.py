@@ -1,47 +1,55 @@
-#from src.middleware.Middleware import *
-from src.log.Logger import logger
 import socket
 import urllib.request
-import configparser
-import io
+from src.util.Configurator import Configurator
 
-def import_config():
-    #import all relevant information
-    with open("conf.ini") as f:
-        sample_config = f.read()
-    config = ConfigParser.RawConfigParser(allow_no_value=True)
-    config.readfp(io.BytesIO(sample_config))
-    print(config.get('doorbird', 'UDP_PORT_ONE'))
-    
-def login_and_wait_for_event():
-    #import credentials from config file
-    # Login with credentials
-    logger.debug("Login in with " + user + " " + password + " to " + url)
-    # store session id for other functions?
-    # while True: listen for notifications of the button and fire event
-    # Send image as parameter: url + "/bha-api/image.cgi"
+udp_address = ""
+udp_port = 0
+door_bird_url = ""
 
-def udpHandler():
-    #Import Settings from Config file
-    UDP_IP_ADDRESS = "0.0.0.0"
-    UDP_PORT_NO = 35344
-    serverSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    serverSock.bind((UDP_IP_ADDRESS, UDP_PORT_NO))
+
+def import_config(section):
+    # get config dictionary all relevant information
+    config = Configurator.get_config(section)
+
+    # set values
+    global udp_address
+    global udp_port
+    global door_bird_url
+    udp_address = config.get("udp_ip_address")
+    udp_port = config.get("udp_port_one")
+    door_bird_url = config.get("door_bird_url")
+
+
+# def login_and_wait_for_event():
+# import credentials from config file
+# Login with credentials
+# logger.debug("Login in with " + user + " " + password + " to " + url)
+# store session id for other functions?
+# while True: listen for notifications of the button and fire event++
+# Send image as parameter: url + "/bha-api/image.cgi"
+
+
+def udphandler():
+    # bind socket
+    server_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    server_sock.bind((udp_address, int(udp_port)))
     while True:
-        data = serverSock.recvfrom(1024)
-        message= data[0].decode()
-        print ("Message: ", message)
+        data = server_sock.recvfrom(1024)
+        message = data[0].decode()
+        print("Message: ", hex(message))
+
 
 def httpRequest():
-    #doorBirdGetImageUrl from config
-    urllib.request.urlopen(doorBirdGetImageUrl).read()
-    
+    # request picture from API
+    urllib.request.urlopen(door_bird_url).read()
 
 
 def main():
-    #do some udp stuff
+    # do some udp stuff
     print("Starting udp server...")
-    udpHandler()
+    import_config("doorbird")
+    udphandler()
+
 
 if __name__ == '__main__':
     main()
