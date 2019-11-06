@@ -3,6 +3,7 @@ from src.log.Logger import logger
 import socket
 
 def login_and_wait_for_event():
+    #import credentials from config file
     # Login with credentials
     logger.debug("Login in with " + user + " " + password + " to " + url)
     # store session id for other functions?
@@ -10,6 +11,7 @@ def login_and_wait_for_event():
     # Send image as parameter: url + "/bha-api/image.cgi"
 
 def udpHandler():
+    #Import Settings from Config file
     UDP_IP_ADDRESS = "0.0.0.0"
     UDP_PORT_NO = 35344
     serverSock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
