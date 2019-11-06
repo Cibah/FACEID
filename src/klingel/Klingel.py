@@ -2,7 +2,7 @@
 from src.log.Logger import logger
 import socket
 import urllib.request
-import ConfigParser
+import configparser
 import io
 
 def import_config():
