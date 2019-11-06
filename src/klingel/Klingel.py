@@ -2,10 +2,17 @@
 from src.log.Logger import logger
 import socket
 import urllib.request
+import ConfigParser
+import io
 
 def import_config():
-    ##import all relevant information
-
+    #import all relevant information
+    with open("conf.ini") as f:
+        sample_config = f.read()
+    config = ConfigParser.RawConfigParser(allow_no_value=True)
+    config.readfp(io.BytesIO(sample_config))
+    print(config.get('doorbird', 'UDP_PORT_ONE'))
+    
 def login_and_wait_for_event():
     #import credentials from config file
     # Login with credentials
