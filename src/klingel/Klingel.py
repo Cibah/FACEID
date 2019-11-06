@@ -1,6 +1,10 @@
 #from src.middleware.Middleware import *
 from src.log.Logger import logger
 import socket
+import urllib.request
+
+def import_config():
+    ##import all relevant information
 
 def login_and_wait_for_event():
     #import credentials from config file
@@ -20,7 +24,13 @@ def udpHandler():
         data = serverSock.recvfrom(1024)
         message= data[0].decode()
         print ("Message: ", message)
-        
+
+def httpRequest():
+    #doorBirdGetImageUrl from config
+    urllib.request.urlopen(doorBirdGetImageUrl).read()
+    
+
+
 def main():
     #do some udp stuff
     print("Starting udp server...")
