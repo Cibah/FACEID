@@ -1,2 +1,7 @@
-Configuration file
--------------------
+#Configuration file
+
+#Doorbird
+UDP_IP_ADDRESS = "0.0.0.0"
+UDP_PORT_NO = 35344
+
+
