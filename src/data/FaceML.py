@@ -45,8 +45,10 @@ class FaceML:
             unknown_face_encoding = face_recognition.face_encodings(unknown_image)[0]
         except IndexError:
             logger.error("No faces found in " + self.path + face)
+            return found
         except IOError:
             logger.error("Cant open the unkown face file")
+            return found
         logger.debug("Comparing the known faces with the unkown picture")
         results = face_recognition.compare_faces(self.known_faces, unknown_face_encoding)
         for result in results:
