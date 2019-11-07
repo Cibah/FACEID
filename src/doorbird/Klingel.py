@@ -1,6 +1,6 @@
 import socket
 import urllib.request
-from src.util.Configurator import Configurator
+from src.config.Configurator import Configurator
 
 udp_address = ""
 udp_port = 0
