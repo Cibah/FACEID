@@ -2,7 +2,7 @@ import configparser
 
 
 class Configurator:
-    config_file = "../util/config.ini"
+    config_file = "../config/config.ini"
 
     @staticmethod
     def get_config(section):

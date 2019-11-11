@@ -1,6 +1,7 @@
 import socket
 import urllib.request
-from src.util.Configurator import Configurator
+from src.config.Configurator import Configurator
+from six import string_types
 
 udp_address = ""
 udp_port = 0
@@ -33,15 +34,20 @@ def udphandler():
     # bind socket
     server_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     server_sock.bind((udp_address, int(udp_port)))
+    print("UDP service started on address: ", udp_address, " and port: ", udp_port)
     while True:
         data = server_sock.recvfrom(1024)
         message = data[0].decode()
-        print("Message: ", hex(message))
+        if isinstance(message, string_types):
+            print("Keep-alive msg...")
+        else:
+            httpRequest()
+            print("Message: ", hex(message))
 
 
 def httpRequest():
-    # request picture from API
-    urllib.request.urlopen(door_bird_url).read()
+    # request picture from API and save it
+    urllib.request.URLopener().retrieve(door_bird_url, "doorbird.png")
 
 
 def main():
@@ -53,3 +59,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

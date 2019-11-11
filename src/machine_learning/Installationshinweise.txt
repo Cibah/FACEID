@@ -1,0 +1,18 @@
+barcode scanner benötigt die Bibliotheken
+
+-zbar= sudo apt-get install libzbar0
+-pyzbar = pip install pyzbar bzw. pip3 install pyzbar
+-opencv = sudo apt install python-opencv
+
+
+und eventuell muss ein Sym-link gesetzt werden:
+
+	ln -s /usr/local/lib/python3.6/dist-packages/cv2.cpython-36m-x86_64-linux-gnu.so cv2.so
+
+
+Face recognition benötigt die Bibliotheken: dlib und face_recognitionace
+-dlib 
+-face_recognitionace = pip3 install face_recognition
+
+anschließend muss evtl. die PATH Variable für face_recognition gesetzt werden um über CLI die Befehle auszuführen
+
