@@ -1,7 +1,8 @@
 import socket
 import urllib.request
-from src.config.Configurator import Configurator
 import datetime
+from src.config.Configurator import Configurator
+from src.log.Logger import logger
 
 udp_address = ""
 udp_port = 0
@@ -25,21 +26,21 @@ def udphandler():
     # bind socket
     server_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     server_sock.bind((udp_address, int(udp_port)))
-    print("UDP service started on address: ", udp_address, " and port: ", udp_port)
+    logger.debug("UDP service started on address: ", udp_address, " and port: ", udp_port)
     while True:
         data = server_sock.recvfrom(1024)
 
         try:
             message = data[0].decode()
-            print("Keep-alive msg: ", message)
+            logger.debug("Keep-alive msg: ", message)
         except:
             httpRequest()
-            print("Message:", " An event has occured !")
+            logger.debug("Message:", " An event has occured !")
 
 
 def httpRequest():
     # request picture from API and save it
-    print("sending http request...")
+    logger.debug("sending http request...")
     currentdate = datetime.datetime.now().timestamp()
     filename = '/home/maik/FaceID/FACEID/img/unknown/%s.jpg' % (currentdate)
     urllib.request.URLopener().retrieve(door_bird_url, filename)
@@ -47,7 +48,7 @@ def httpRequest():
 
 def main():
     # do some udp stuff
-    print("Starting udp server...")
+    logger.debug("Starting udp server...")
     import_config("doorbird")
     udphandler()
 
