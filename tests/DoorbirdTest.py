@@ -2,7 +2,7 @@ import unittest
 from src.klinkel.Klingel import klingel
 
 
-class TestKlingel(unittest.TestCase):
+class DoorbirdTest(unittest.TestCase):
 
     def test_import(self):
         #import from config file
