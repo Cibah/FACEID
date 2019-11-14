@@ -1,8 +1,11 @@
+# Check events from openhab
+# Check Making of an image
+
 import unittest
 from src.klinkel.Klingel import klingel
 
 
-class TestKlingel(unittest.TestCase):
+class DoorbirdTest(unittest.TestCase):
 
     def test_import(self):
         #import from config file
