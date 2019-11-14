@@ -1,7 +1,7 @@
 import socket
 import urllib.request
 from src.config.Configurator import Configurator
-from six import string_types
+import datetime
 
 udp_address = ""
 udp_port = 0
@@ -17,17 +17,8 @@ def import_config(section):
     global udp_port
     global door_bird_url
     udp_address = config.get("udp_ip_address")
-    udp_port = config.get("udp_port_one")
+    udp_port = config.get("udp_port_two")
     door_bird_url = config.get("door_bird_url")
-
-
-# def login_and_wait_for_event():
-# import credentials from config file
-# Login with credentials
-# logger.debug("Login in with " + user + " " + password + " to " + url)
-# store session id for other functions?
-# while True: listen for notifications of the button and fire event++
-# Send image as parameter: url + "/bha-api/image.cgi"
 
 
 def udphandler():
@@ -37,17 +28,21 @@ def udphandler():
     print("UDP service started on address: ", udp_address, " and port: ", udp_port)
     while True:
         data = server_sock.recvfrom(1024)
-        message = data[0].decode()
-        if isinstance(message, string_types):
-            print("Keep-alive msg...")
-        else:
+
+        try:
+            message = data[0].decode()
+            print("Keep-alive msg: ", message)
+        except:
             httpRequest()
-            print("Message: ", hex(message))
+            print("Message:", " An event has occured !")
 
 
 def httpRequest():
     # request picture from API and save it
-    urllib.request.URLopener().retrieve(door_bird_url, "doorbird.png")
+    print("sending http request...")
+    currentdate = datetime.datetime.now().timestamp()
+    filename = '/home/maik/FaceID/FACEID/img/unknown/%s.jpg' % (currentdate)
+    urllib.request.URLopener().retrieve(door_bird_url, filename)
 
 
 def main():
@@ -59,4 +54,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
