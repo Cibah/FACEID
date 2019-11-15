@@ -1,8 +1,9 @@
 import os
 from datetime import datetime
 import lib.face_recognition.face_recognition as face_recognition
-from src.log.Logger import logger
 import src.incidents.Mail
+from src.log.Logger import logger
+import src.config.Configurator as config
 
 # Load the jpg files into numpy arrays
 # from lib.face_recognition.docs.conf import Mock
@@ -53,9 +54,16 @@ class FaceML:
             return found
         logger.debug("Comparing the known faces with the unkown picture")
         results = face_recognition.compare_faces(self.known_faces, unknown_face_encoding)
+        resultFiles = []
         for result in results:
             if result:
                 found = result
+                print("Face found in : " + result)
+                resultFiles.append(result)
         logger.debug("Processed Faces in " + str(datetime.now() - time1) + " seconds")
         logger.debug("Found known Face? : " + str(found))
         return found
+
+
+ml = FaceML(config.get("data", "data_path_known_faces"))
+ml.check_face("../../img/unknown.jpg")

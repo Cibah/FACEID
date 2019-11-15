@@ -1,7 +1,5 @@
 import configparser
-
 from src.log.Logger import logger
-
 
 class Configurator:
     config_file = "../config/config.ini"
