@@ -1,5 +1,4 @@
 import configparser
-from src.log.Logger import logger
 
 class Configurator:
     config_file = "../config/config.ini"
@@ -24,6 +23,7 @@ class Configurator:
 
     @staticmethod
     def get(section, line):
+        from src.log.Logger import logger
         config = configparser.ConfigParser()
         config.read(Configurator.config_file)
         d = dict(config.items(section))

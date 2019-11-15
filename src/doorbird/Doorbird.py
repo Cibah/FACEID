@@ -26,13 +26,13 @@ def udphandler():
     # bind socket
     server_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     server_sock.bind((udp_address, int(udp_port)))
-    logger.debug("UDP service started on address: ", udp_address, " and port: ", udp_port)
+    logger.debug("UDP service started on address: {} and port: {}".format(udp_address,udp_port))
     while True:
         data = server_sock.recvfrom(1024)
 
         try:
             message = data[0].decode()
-            logger.debug("Keep-alive msg: ", message)
+            logger.debug("Keep-alive msg: {}".format(message))
         except:
             httpRequest()
             logger.debug("Message:", " An event has occured !")
