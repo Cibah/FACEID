@@ -9,7 +9,7 @@ def crop(image, file):
     # the cnn net takes too much time and breaks with big images
     # face_locations = face_recognition.face_locations(image, number_of_times_to_upsample=0, model="cnn")
     face_locations = face_recognition.face_locations(image)
-    logger.debug("I found {} face(s) in this photograph.".format(len(face_locations)))
+    logger.debug("Cropper found {} face(s) in this photograph.".format(len(face_locations)))
     for face_location in face_locations:
         top, right, bottom, left = face_location
         top = int(top * 0.7)

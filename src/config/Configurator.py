@@ -1,5 +1,7 @@
 import configparser
 
+from src.log.Logger import logger
+
 
 class Configurator:
     config_file = "../config/config.ini"
@@ -21,3 +23,12 @@ class Configurator:
             for name, value in config.items(section_name):
                 print('  {} = {}'.format(name, value))
             print()
+
+    @staticmethod
+    def get(section, line):
+        config = configparser.ConfigParser()
+        config.read(Configurator.config_file)
+        d = dict(config.items(section))
+        if (d.get(line) == "None"):
+            logger.error("No setting found for: " + section + " : " + line)
+        return d.get(line)
