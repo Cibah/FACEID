@@ -34,4 +34,5 @@ def sendMail(content, files=None):
     s.send_message(msg)
     del msg
 
-# sendMail("Hello")
+
+sendMail("Hello")

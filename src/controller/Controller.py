@@ -28,7 +28,7 @@ def main():
     else:
         # do not open door
         logger.debug("No access")
-        if (failed_access > Configurator.get("other", "max_num_of_failed_access")):
+        if (failed_access > Configurator.get("general", "max_num_of_failed_access")):
             sendMail("5 failed Access", "../../img/unknown.jpg")
 
 
