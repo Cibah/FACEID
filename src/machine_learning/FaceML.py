@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 import lib.face_recognition.face_recognition as face_recognition
 from src.log.Logger import logger
-
+import src.incidents.Mail
 
 # Load the jpg files into numpy arrays
 # from lib.face_recognition.docs.conf import Mock
@@ -29,8 +29,10 @@ class FaceML:
                     self.known_faces.append(face_encoding)
                 except IndexError:
                     logger.error("No faces found in " + self.path + face)
+                    src.sendMail("No Face found in file", "self.path + face")
                 except IOError:
                     logger.error("Cant open the face file " + self.path + face)
+                    src.sendMail("No Face found in file", "self.path + face")
         logger.debug("Loaded all " + str(len(self.known_faces)) + " faces in " + str(
             datetime.now() - time1) + " seconds")
 
