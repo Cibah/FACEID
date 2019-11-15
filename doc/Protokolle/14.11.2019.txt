@@ -1,0 +1,23 @@
+# Projekttreffen 14.11.2019
+
+Anwesend: Alle außer Philipp
+
+Kurze Einleitung was alles gemacht wurde.
+
+Hugo hat die dlib auf den Raspberry Pi 2 installiert, weil die Tutorials dafür waren.
+Übersicht wie schnell Gesichter erkennt und verglichen werden.
+
+Durchlaufen der Anforderungen:
+Klingelevent funktioniert.
+Download der Bilder funktioniert auch.
+
+FaceDetection: Welches ist das größte Gesicht, dann dieses verwenden? Beim Array. Siehe Cropper
+Doorbird & Danalock über openHAB integrieren.
+
+Vorführungen mit QR Code + Cropping
+Telegram zu komplex, lieber per Mail
+
+Feedback:
+Projektmanagement ist nicht gut
+eine Präsentation mit allen Infos: Was wurde getan und was soll kommen.
+
