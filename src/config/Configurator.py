@@ -1,7 +1,7 @@
 import configparser
 
 class Configurator:
-    config_file = "../config/config.ini"
+    config_file = "../../config.ini"
 
     @staticmethod
     def get_config(section):
@@ -23,10 +23,7 @@ class Configurator:
 
     @staticmethod
     def get(section, line):
-        from src.log.Logger import logger
         config = configparser.ConfigParser()
         config.read(Configurator.config_file)
         d = dict(config.items(section))
-        if (d.get(line) == "None"):
-            logger.error("No setting found for: " + section + " : " + line)
         return d.get(line)
