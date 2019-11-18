@@ -1,8 +1,6 @@
 import datetime
 import os
 
-from src.klingel.Klingel import *
-
 from src.config import Configurator
 from src.danalock.Danalock import openDoor, lockDoor
 from src.doorbird.Doorbird import waitForEventAndDownloadImage
@@ -27,13 +25,13 @@ def main():
 
         qrtuple = findQR()
         if qrtuple[0]:
-            if qrtuple[1]:
+            if qrtuple[1] == "register":
                 sendMail("Add Known Face", image)
                 # Danalock.open()
                 currentdate = datetime.datetime.now().timestamp()
                 crop(image, Configurator.get("data", "data_path_known_faces") + currentdate)
                 ml.load_known_faces()
-            else:
+            elif qrtuple[1] == "deregister":
                 result = ml.check_face(image)
                 if result[0]:
                     # find face in known faces and delete it

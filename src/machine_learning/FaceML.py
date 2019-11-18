@@ -66,6 +66,5 @@ class FaceML:
         logger.debug("Found known Face? : " + str(found))
         return found
 
-
-ml = FaceML(Configurator.get("data", "data_path_known_faces"))
-ml.check_face("../../img/unknown.jpg")
+# ml = FaceML(Configurator.get("data", "data_path_known_faces"))
+# ml.check_face("../../img/unknown.jpg")
