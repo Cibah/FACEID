@@ -30,10 +30,10 @@ def main():
                 # Danalock.open()
                 currentdate = datetime.datetime.now().timestamp()
                 filePath1 = Configurator.get("data", "data_path_known_faces")
-                filePath = filePath1 + currentdate + '.jpg'
+                filePath = filePath1 + str(currentdate) + '.jpg'
                 crop(image, filePath )
                 ml.load_known_faces()
-            elif qrtuple[1] =="check out":
+            elif qrtuple[1] =="kjdc63nmd3":
                 result = ml.check_face(image)
                 if result[0]:
                     # find face in known faces and delete it

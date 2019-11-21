@@ -27,8 +27,8 @@ def downloadImage():
     door_bird_url = config.get("doorbird", "door_bird_url")
     logger.debug("sending http request...")
     currentdate = datetime.datetime.now().timestamp()
-    filename = '/home/maik/FaceID/FACEID/img/unknown/doorbird_testing.jpg'
-    # filename = config.get("data", "data_path_unknown_faces") + (currentdate)
+    filepath = config.get("data", "data_path_unknown_faces")
+    filename = filepath + str(currentdate) + '.jpg'
     urllib.request.URLopener().retrieve(door_bird_url, filename)
     return filename
 

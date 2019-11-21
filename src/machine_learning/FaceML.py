@@ -18,6 +18,8 @@ class FaceML:
         self.load_known_faces()
 
     def load_known_faces(self):
+        self.known_faces = []
+        self.filelist = []
         time1 = datetime.now()
         if not os.path.exists(self.path):
             logger.error("Path not found_ " + self.path)
