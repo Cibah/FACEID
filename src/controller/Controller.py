@@ -1,7 +1,6 @@
 import datetime
 import os
-
-from src.config import Configurator
+from src.config.Configurator import Configurator
 from src.danalock.Danalock import openDoor, lockDoor
 from src.doorbird.Doorbird import waitForEventAndDownloadImage
 from src.incidents.Mail import sendMail
@@ -18,20 +17,23 @@ def main():
     logger.debug("FaceID by HFU v")
     failed_access = 0
     # init
-    ml = FaceML(Configurator.get("data", "data_path_known_faces"))
+    ml = FaceML()
 
     while True:
         image = waitForEventAndDownloadImage()
 
-        qrtuple = findQR()
+        qrtuple = findQR(image)
+        logger.debug(qrtuple[1])
         if qrtuple[0]:
-            if qrtuple[1] == "register":
-                sendMail("Add Known Face", image)
+            if qrtuple[1] == "mew63xy93kfhe":
+                sendMail("Add Known Face", [image])
                 # Danalock.open()
                 currentdate = datetime.datetime.now().timestamp()
-                crop(image, Configurator.get("data", "data_path_known_faces") + currentdate)
+                filePath1 = Configurator.get("data", "data_path_known_faces")
+                filePath = filePath1 + currentdate + '.jpg'
+                crop(image, filePath )
                 ml.load_known_faces()
-            elif qrtuple[1] == "deregister":
+            elif qrtuple[1] =="check out":
                 result = ml.check_face(image)
                 if result[0]:
                     # find face in known faces and delete it
@@ -42,15 +44,15 @@ def main():
                     sendMail("Wanted to remove a known face, but could not find the regarding face!", image)
         else:
             person_known = ml.check_face(image)
-            if person_known[0]:
+            if person_known:
                 # open door
-                logger.debug("Open the door for " + person_known[1])
+                logger.debug("Open the door for authorised person...")
                 openDoor()
             else:
                 # do not open door
                 logger.debug("No access!")
                 failed_access += 1
-                if (failed_access > Configurator.get("general", "max_num_of_failed_access")):
+                if failed_access > int(Configurator.get("general", "max_num_of_failed_access")):
                     sendMail("5 failed attempts to access", image)
                     lockDoor()
 

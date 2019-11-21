@@ -13,8 +13,8 @@ class FaceML:
     path = ""
     time1 = datetime.now()
 
-    def __init__(self, path):
-        self.path = path
+    def __init__(self):
+        self.path = Configurator.get("data", "data_path_known_faces")
         self.load_known_faces()
 
     def load_known_faces(self):
@@ -56,7 +56,7 @@ class FaceML:
             return found
         logger.debug("Comparing the known faces with the unkown picture")
         results = face_recognition.compare_faces(self.known_faces, unknown_face_encoding)
-        index =0
+        index = 0
         for result in results:
             if result:
                 found = result

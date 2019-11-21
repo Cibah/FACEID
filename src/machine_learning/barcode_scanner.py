@@ -13,21 +13,22 @@ from src.config.Configurator import Configurator
 cv2.waitKey(0)
 
 
-def findQR():
+def findQR(pathToImage):
     isQR = False
     qrkey = ""
 
-    ap = argparse.ArgumentParser()
-    ap.add_argument("-i", "--image", required=True,
-                    help="path to input image")
-    args = vars(ap.parse_args())
+    # ap = argparse.ArgumentParser()
+    # ap.add_argument("-i", "--image", required=True, help="path to input image")
+    # ap.add_argument(pathToImage)
+    # args = vars(ap.parse_args())
 
     # load the input image
-    image = cv2.imread(args["image"])
+    image = cv2.imread(pathToImage)
 
     # find the barcodes in the image and decode each of the barcodes
     barcodes = pyzbar.decode(image)
 
+    qrkey=""
     # loop over the detected barcodes
     for barcode in barcodes:
         # extract the bounding box location of the barcode and draw the
@@ -40,10 +41,8 @@ def findQR():
         barcodeData = barcode.data.decode("utf-8")
         barcodeType = barcode.type
         isQR = True
-        if barcodeData == Configurator.get("general", "qr_register_Key"):
-            qrkey = "register"
-        elif barcodeData == Configurator.get("general", "qr_deregister_Key"):
-            qrkey = "deregister"
+
+        qrkey= barcodeData
 
         # print the barcode type and data to the terminal
         print("[INFO] Found {} barcode: {}".format(barcodeType, barcodeData))
