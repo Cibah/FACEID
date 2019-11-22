@@ -8,6 +8,7 @@ from src.log.Logger import logger
 from src.machine_learning.Cropper import crop
 from src.machine_learning.FaceML import FaceML
 from src.machine_learning.barcode_scanner import findQR
+from PIL import Image
 
 version = "0.0.1"
 
@@ -19,21 +20,34 @@ def main():
     # init
     ml = FaceML()
 
+    qr_register = Configurator.get("machine_learning", "qr_register_key")
+    qr_unregister = Configurator.get("machine_learning", "qr_unregister_key")
+
     while True:
-        image = waitForEventAndDownloadImage()
+        raw_image = waitForEventAndDownloadImage()
+
+        # Resize image to improve detection of QR-Codes
+        size = 3840, 2160
+        im = Image.open(raw_image)
+        im_resized = im.resize(size, Image.ANTIALIAS)
+
+        # convert jpg to png to improve QR-Code detection
+        raw_im_jpg = raw_image.text.partition(".")[0]
+        image = raw_im_jpg + ".png"
+        im_resized.save(image, "PNG")
 
         qrtuple = findQR(image)
         logger.debug(qrtuple[1])
         if qrtuple[0]:
-            if qrtuple[1] == "mew63xy93kfhe":
+            if qrtuple[1] == qr_register:
                 sendMail("Add Known Face", [image])
                 # Danalock.open()
                 currentdate = datetime.datetime.now().timestamp()
-                filePath1 = Configurator.get("data", "data_path_known_faces")
-                filePath = filePath1 + str(currentdate) + '.jpg'
-                crop(image, filePath )
+                file_path_partial = Configurator.get("data", "data_path_known_faces")
+                file_path = file_path_partial + str(currentdate) + '.jpg'
+                crop(image, file_path )
                 ml.load_known_faces()
-            elif qrtuple[1] =="kjdc63nmd3":
+            elif qrtuple[1] == qr_unregister:
                 result = ml.check_face(image)
                 if result[0]:
                     # find face in known faces and delete it
