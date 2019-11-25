@@ -5,12 +5,14 @@ from src.config.Configurator import Configurator
 class BarcodeTest(unittest.TestCase):
 
     def test_qr_detection(self):
+        image = "test_detection.png"
         qr_tuple = findQR(image)
         qr_detected = qr_tuple[0]
         self.assertTrue(qr_detected)
 
 
     def test_qr_register(self):
+        image = "test_register.png"
         qr_tuple = findQR(image)
         qr_detected = qr_tuple[0]
         qr_text = qr_tuple[1]
@@ -19,6 +21,7 @@ class BarcodeTest(unittest.TestCase):
 
 
     def test_qr_unregister(self):
+        image = "test_unregister.png"
         qr_tuple = findQR(image)
         qr_detected = qr_tuple[0]
         qr_text = qr_tuple[1]

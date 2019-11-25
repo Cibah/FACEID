@@ -12,11 +12,17 @@ def waitForEventAndDownloadImage():
     server_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     server_sock.bind((udp_address, int(udp_port)))
     logger.debug("UDP service started on address: {} and port: {}".format(udp_address, udp_port))
+    old_message = ""
     while True:
         data = server_sock.recvfrom(1024)
         try:
             message = data[0].decode()
-            logger.debug("Keep-alive msg: {}".format(message))
+
+            if old_message == message
+                logger.debug("Keep-alive msg: {}".format(message))
+
+            old_message = message
+
         except:
             logger.debug("Message: An event has occured!")
             return downloadImage()
@@ -32,12 +38,3 @@ def downloadImage():
     urllib.request.URLopener().retrieve(door_bird_url, filename)
     return filename
 
-# def main():
-    # do some udp stuff
-#   logger.debug("Starting udp server...")
-# import_config("doorbird")
-#  waitForEventAndDownloadImage()
-
-
-# if __name__ == '__main__':
-#    main()
