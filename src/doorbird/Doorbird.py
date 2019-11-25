@@ -1,3 +1,4 @@
+import binascii
 import socket
 import urllib.request
 import datetime
@@ -13,6 +14,8 @@ def waitForEventAndDownloadImage():
     server_sock.bind((udp_address, int(udp_port)))
     logger.debug("UDP service started on address: {} and port: {}".format(udp_address, udp_port))
     old_message = ""
+    old_event = ""
+
     while True:
         data = server_sock.recvfrom(1024)
 
@@ -25,8 +28,16 @@ def waitForEventAndDownloadImage():
             old_message = message
 
         except:
-            logger.debug("Message: An event has occured!")
-            return downloadImage()
+            hex_bytes = binascii.hexlify(data[0])
+            event = hex_bytes.decode("ascii")
+
+            if event != old_event:
+                logger.debug("Message: An event has occured!")
+                old_event = event
+                return downloadImage()
+
+            old_event = event
+
 
 
 def downloadImage():
