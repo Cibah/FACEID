@@ -27,12 +27,11 @@ def main():
         raw_image = waitForEventAndDownloadImage()
 
         # Resize image to improve detection of QR-Codes
-        size = 3840, 2160
+        size = 1920, 1080
         im = Image.open(raw_image)
         im_resized = im.resize(size, Image.ANTIALIAS)
 
         # convert jpg to png to improve QR-Code detection
-        #raw_im_jpg = raw_image.text.partition(".")[0]
         raw_im_jpg = raw_image.split('.')[0]
         image = raw_im_jpg + ".png"
         im_resized.save(image, "PNG")

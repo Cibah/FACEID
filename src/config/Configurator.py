@@ -1,11 +1,13 @@
 import configparser
 import os
+from pathlib import Path
 
 class Configurator:
     cwd = os.getcwd()
-    #config_file = r'../FACEID/config.ini'
-    # TODO fix this path error for tests so it gets:
-    config_file = r'/home/maik/FaceID/FACEID/config.ini'
+    parent_dir = Path(cwd).parent.parent
+    config_path = os.path.abspath(str(parent_dir))
+    file = '/config.ini'
+    config_file = config_path + file
 
     @staticmethod
     def get_config(section):
