@@ -15,10 +15,11 @@ def waitForEventAndDownloadImage():
     old_message = ""
     while True:
         data = server_sock.recvfrom(1024)
+
         try:
             message = data[0].decode()
 
-            if old_message == message
+            if message != old_message:
                 logger.debug("Keep-alive msg: {}".format(message))
 
             old_message = message
