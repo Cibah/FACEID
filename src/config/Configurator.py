@@ -1,7 +1,9 @@
 import configparser
 
 class Configurator:
-    config_file = "../../config.ini"
+    config_file = '../../config.ini'
+    # TODO fix this path error for tests so it gets:
+    # config_file = r'/home/maik/FaceID/FACEID/config.ini'
 
     @staticmethod
     def get_config(section):
