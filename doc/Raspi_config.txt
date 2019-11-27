@@ -18,4 +18,5 @@ Was dadrauf schon insalliert ist und funktionniert:
     --> pyzbar
     --> opencv
   - python3
-  - openhab 
+  - openhab
+  - PIL (Python Image Library
