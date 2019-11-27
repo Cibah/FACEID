@@ -8,6 +8,8 @@ https://github.com/ageitgey/face_recognition
 
 ## src - Quellcode
 
+## tests - Testklassen
+
 ## Thema: Entwicklung einer Security-Applikation basierend auf Gesichtswiedererkennung
 
 Projektbeschreibung:
