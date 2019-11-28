@@ -23,18 +23,21 @@ def main():
     qr_register = Configurator.get("machine_learning", "qr_register_key")
     qr_unregister = Configurator.get("machine_learning", "qr_unregister_key")
 
+    #TODO: Check Keep-alive of doorbird
     while True:
         raw_image = waitForEventAndDownloadImage()
 
         # Resize image to improve detection of QR-Codes
-        size = 1920, 1080
+        size = 1920, 1440
         im = Image.open(raw_image)
         im_resized = im.resize(size, Image.ANTIALIAS)
 
         # convert jpg to png to improve QR-Code detection
-        raw_im_jpg = raw_image.split('.')[0]
-        image = raw_im_jpg + ".png"
+        raw_im_jpg = raw_image[:-3]
+        image = raw_im_jpg + "png"
+        os.remove(raw_im_jpg+"jpg")
         im_resized.save(image, "PNG")
+        logger.debug("Image resized" + image)
 
         qrtuple = findQR(image)
         logger.debug(qrtuple[1])
