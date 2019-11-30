@@ -46,7 +46,8 @@ def main():
                 file_path_partial = Configurator.get("data", "data_path_known_faces")
                 file_path = file_path_partial + str(currentdate) + '.jpg'
                 crop(image, file_path )
-                ml.load_known_faces()
+                ml.load_new_face(file_path)
+                # ml.load_known_faces()
             elif qrtuple[1] == qr_unregister:
                 result = ml.check_face(image)
                 if result[0]:
