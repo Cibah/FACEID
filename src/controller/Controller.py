@@ -8,7 +8,6 @@ from src.log.Logger import logger
 from src.machine_learning.Cropper import crop
 from src.machine_learning.FaceML import FaceML
 from src.machine_learning.barcode_scanner import findQR
-from PIL import Image
 
 version = "0.0.1"
 
@@ -25,31 +24,20 @@ def main():
 
     #TODO: Check Keep-alive of doorbird
     while True:
-        raw_image = waitForEventAndDownloadImage()
-
-        # Resize image to improve detection of QR-Codes
-        size = 1920, 1440
-        im = Image.open(raw_image)
-        im_resized = im.resize(size, Image.ANTIALIAS)
-
-        # convert jpg to png to improve QR-Code detection
-        raw_im_jpg = raw_image[:-3]
-        image = raw_im_jpg + "png"
-        os.remove(raw_im_jpg+"jpg")
-        im_resized.save(image, "PNG")
-        logger.debug("Image resized" + image)
-
+        image = waitForEventAndDownloadImage()
         qrtuple = findQR(image)
-        logger.debug(qrtuple[1])
+
         if qrtuple[0]:
             if qrtuple[1] == qr_register:
-                sendMail("Add Known Face", [image])
                 # Danalock.open()
                 currentdate = datetime.datetime.now().timestamp()
                 file_path_partial = Configurator.get("data", "data_path_known_faces")
                 file_path = file_path_partial + str(currentdate) + '.jpg'
-                crop(image, file_path )
-                ml.load_new_face(file_path)
+                if crop(image, file_path):
+                    ml.load_new_face(file_path)
+                    sendMail("Add Known Face", [image])
+                else:
+                    logger.error("No Face found in registering image " + image)
                 # ml.load_known_faces()
             elif qrtuple[1] == qr_unregister:
                 result = ml.check_face(image)
