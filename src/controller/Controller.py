@@ -40,19 +40,20 @@ def main():
                     logger.error("No Face found in registering image " + image)
                 # ml.load_known_faces()
             elif qrtuple[1] == qr_unregister:
-                result = ml.check_face(image)
-                if result[0]:
-                    # find face in known faces and delete it
-                    os.remove(result[1])
-                    ml.load_known_faces()
-                    sendMail("Remove known face!", result[1])
-                else:
-                    sendMail("Wanted to remove a known face, but could not find the regarding face!", image)
+                results = ml.check_face(image)
+                for result in results:
+                    if result[0]:
+                        # find face in known faces and delete it
+                        os.remove(result[1])
+                        ml.load_known_faces()
+                        sendMail("Remove known face!", result[1])
+                    else:
+                        sendMail("Wanted to remove a known face, but could not find the regarding face!", image)
         else:
             person_known = ml.check_face(image)
-            if person_known:
+            if len(person_known) != 0:
                 # open door
-                logger.debug("Open the door for authorised person...")
+                logger.debug("Open the door for authorised person.")
                 openDoor()
             else:
                 # do not open door
