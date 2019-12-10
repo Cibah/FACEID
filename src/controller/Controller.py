@@ -55,9 +55,9 @@ def main():
                 result = ml.check_face(image)
                 if result[0]:
                     # find face in known faces and delete it
+                    sendMail("Remove known face!", [result[1]])
                     os.remove(result[1])
                     ml.load_known_faces()
-                    sendMail("Remove known face!", result[1])
                 else:
                     sendMail("Wanted to remove a known face, but could not find the regarding face!", image)
         else:

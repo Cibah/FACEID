@@ -55,14 +55,14 @@ def findQR(pathToImage):
     return result
 
 
-processed = 0
-found = 0
-# print(findQR("../../img/QrCodes/test5_crop.jpg"))
-
-
-for face in os.listdir("../../img/QrCodes/"):
-    if face.endswith(".jpg") or face.endswith(".png"):
-        processed += 1
-        if ((findQR("../../img/QrCodes/" + face))[0] == True):
-            found += 1
-print(str(found) + "/" + str(processed))
+# processed = 0
+# found = 0
+# # print(findQR("../../img/QrCodes/test5_crop.jpg"))
+#
+# 
+# for face in os.listdir("../../img/QrCodes/"):
+#     if face.endswith(".jpg") or face.endswith(".png"):
+#         processed += 1
+#         if ((findQR("../../img/QrCodes/" + face))[0] == True):
+#             found += 1
+# print(str(found) + "/" + str(processed))
