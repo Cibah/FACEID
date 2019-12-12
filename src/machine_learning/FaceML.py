@@ -24,7 +24,7 @@ class FaceML:
         time1 = datetime.now()
         if not os.path.exists(self.path):
             logger.error("Path not found_ " + self.path)
-        logger.debug("Loading known faces")
+        logger.info("Loading known faces")
         for face in os.listdir(self.path):
             logger.debug("Loading face " + face)
             if face.endswith(".jpg"):
@@ -40,12 +40,12 @@ class FaceML:
                 except IOError:
                     logger.error("Cant open the face file " + self.path + face)
                     # sendMail("No Face found in file", "self.path + face")
-        logger.debug("Loaded all " + str(len(self.known_faces)) + " faces in " + str(
+        logger.info("Loaded all " + str(len(self.known_faces)) + " faces in " + str(
             datetime.now() - time1) + " seconds")
 
     def load_new_face(self, image):
         time1 = datetime.now()
-        logger.debug("Loading the new face")
+        logger.info("Loading the new face")
         face_image = face_recognition.load_image_file(image)
         try:
             encodings = face_recognition.face_encodings(face_image)
@@ -58,35 +58,34 @@ class FaceML:
         except IOError:
             logger.error("Cant open the face file " + image)
             # sendMail("No Face found in file", "self.path + face")
-        logger.debug("Loaded all " + str(len(self.known_faces)) + " faces in " + str(
+        logger.info("Loaded all " + str(len(self.known_faces)) + " faces in " + str(
             datetime.now() - time1) + " seconds")
 
-
-def check_face(self, image):
-    unknown_face_encoding = []
-    time1 = datetime.now()
-    logger.debug("Loading unknown face")
-    faces = []
-    try:
-        unknown_image = face_recognition.load_image_file(image)
-        unknown_face_encoding = face_recognition.face_encodings(unknown_image)[0]
-    except IndexError:
-        logger.error("No faces found in " + self.path + image)
+    def check_face(self, image):
+        unknown_face_encoding = []
+        time1 = datetime.now()
+        logger.info("Checking unknown face")
+        faces = []
+        try:
+            unknown_image = face_recognition.load_image_file(image)
+            unknown_face_encoding = face_recognition.face_encodings(unknown_image)[0]
+        except IndexError:
+            logger.error("No faces found in " + self.path + image)
+            return faces
+        except IOError:
+            logger.error("Cant open the unkown face file")
+            return faces
+        logger.debug("Comparing the known faces with the unkown picture")
+        results = face_recognition.compare_faces(self.known_faces, unknown_face_encoding)
+        index = 0
+        for result in results:
+            if result:
+                logger.info("Face found in : " + self.filelist[index])
+                faces.append(self.filelist[index])
+            index += 1
+        logger.debug("Processed Faces in " + str(datetime.now() - time1) + " seconds")
+        logger.debug("Found known Face? : " + str((len(faces) != 0)))
         return faces
-    except IOError:
-        logger.error("Cant open the unkown face file")
-        return faces
-    logger.debug("Comparing the known faces with the unkown picture")
-    results = face_recognition.compare_faces(self.known_faces, unknown_face_encoding)
-    index = 0
-    for result in results:
-        if result:
-            print("Face found in : " + self.filelist[index])
-            faces.append(self.filelist[index])
-        index += 1
-    logger.debug("Processed Faces in " + str(datetime.now() - time1) + " seconds")
-    logger.debug("Found known Face? : " + (len(faces) != 0))
-    return faces
 
 # ml = FaceML(Configurator.get("data", "data_path_known_faces"))
 # ml.check_face("../../img/unknown.jpg")

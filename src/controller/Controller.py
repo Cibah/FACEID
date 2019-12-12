@@ -37,6 +37,7 @@ def main():
                 if crop(image, file_path):
                     ml.load_new_face(file_path)
                     sendMail("Add Known Face", [image])
+                    openDoor()
                 else:
                     logger.error("No Face found in registering image " + image)
                 # ml.load_known_faces()
