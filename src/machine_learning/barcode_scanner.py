@@ -1,41 +1,68 @@
 # import the necessary packages
 # HOW TO USE THIS:  python3 barcode_Scanner.py --image ../../img/test1.png
-import argparse
+# import os
+import os
+
+import PIL
 import cv2
+import imutils as imutils
+import numpy
+from PIL import Image
 from pyzbar import pyzbar
- 
-# construct the argument parser and parse the arguments
-ap = argparse.ArgumentParser()
-ap.add_argument("-i", "--image", required=True,
-	help="path to input image")
-args = vars(ap.parse_args())
+from src.log.Logger import logger
+from PIL import ImageEnhance
 
-# load the input image
-image = cv2.imread(args["image"])
- 
-# find the barcodes in the image and decode each of the barcodes
-barcodes = pyzbar.decode(image)
 
-# loop over the detected barcodes
-for barcode in barcodes:
-	# extract the bounding box location of the barcode and draw the
-	# bounding box surrounding the barcode on the image
-	(x, y, w, h) = barcode.rect
-	cv2.rectangle(image, (x, y), (x + w, y + h), (0, 0, 255), 2)
- 
-	# the barcode data is a bytes object so if we want to draw it on
-	# our output image we need to convert it to a string first
-	barcodeData = barcode.data.decode("utf-8")
-	barcodeType = barcode.type
- 
-	# draw the barcode data and barcode type on the image
-	# text = "{} ({})".format(barcodeData, barcodeType)
-	# cv2.putText(image, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX,
-	#	0.5, (0, 0, 255), 2)
- 
-	# print the barcode type and data to the terminal
-	print("[INFO] Found {} barcode: {}".format(barcodeType, barcodeData))
- 
-# show the output image
-# cv2.imshow("Image", image)
-cv2.waitKey(0)
+def upscale(image, scale):
+    height, width = image.shape[:2]
+    return cv2.resize(image, (int(width * scale), int(height * scale)), interpolation=cv2.INTER_LINEAR)
+
+
+def greyscale(image, iThresh):
+    # return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    return cv2.threshold(image, iThresh, 255, cv2.THRESH_BINARY)[1]
+
+def findQR(pathToImage):
+    isQR = False
+    qrkey = ""
+    logger.debug("Checking QR Codes in " + pathToImage)
+    img_original = cv2.imread(pathToImage)
+
+    image = upscale(img_original, 3.0)
+    barcodes = pyzbar.decode(image)
+
+    if len(barcodes) == 0:
+        image = greyscale(image, 65)
+        barcodes = pyzbar.decode(image)
+
+    if len(barcodes) == 0:
+        image = upscale(img_original, 2.0)
+        barcodes = pyzbar.decode(image)
+
+    if len(barcodes) == 0:
+        image = greyscale(image, 55)
+        barcodes = pyzbar.decode(image)
+
+    # loop over the detected barcodes
+    for barcode in barcodes:
+        barcodeData = barcode.data.decode("utf-8")
+        logger.debug("QR-Code found: " + barcodeData)
+        isQR = True
+        qrkey = barcodeData
+    if not (isQR):
+        logger.info("No QR-Code found")
+    result = (isQR, qrkey)
+    return result
+
+
+processed = 0
+found = 0
+# print(findQR("../../img/QrCodes/test5_crop.jpg"))
+
+
+# for face in os.listdir("../../img/QrCodes/"):
+#    if face.endswith(".jpg") or face.endswith(".png"):
+#        processed += 1
+#        if ((findQR("../../img/QrCodes/" + face))[0] == True):
+#            found += 1
+# print(str(found) + "/" + str(processed))

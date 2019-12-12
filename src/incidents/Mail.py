@@ -11,7 +11,12 @@ def sendMail(content, files=None):
     s = smtplib.SMTP(host=config.get("mail", "smpt_host"), port=config.get("mail", "smtp_port"))
     s.starttls()
     logger.debug("Log in to " + config.get("mail", "smpt_host") + " for sending e-mail")
-    s.login(config.get("mail", "smtp_user"), config.get("mail", "smtp_pass"))
+    try:
+        s.login(config.get("mail", "smtp_user"), config.get("mail", "smtp_pass"))
+    except smtplib.SMTPAuthenticationError:
+        logger.error("Error in Login to SMTP Server")
+        return
+
     msg = MIMEMultipart()  # create a message
     msg['From'] = config.get("mail", "mail_from")
     msg['To'] = config.get("mail", "mail_receiver")
@@ -33,6 +38,3 @@ def sendMail(content, files=None):
     # send the message via the server set up earlier.
     s.send_message(msg)
     del msg
-
-
-sendMail("Hello")

@@ -1,10 +1,13 @@
 import configparser
-
-from src.log.Logger import logger
-
+import os
+from pathlib import Path
 
 class Configurator:
-    config_file = "../config/config.ini"
+    cwd = os.getcwd()
+    parent_dir = Path(cwd).parent.parent
+    config_path = os.path.abspath(str(parent_dir))
+    file = '/config.ini'
+    config_file = config_path + file
 
     @staticmethod
     def get_config(section):
@@ -29,6 +32,4 @@ class Configurator:
         config = configparser.ConfigParser()
         config.read(Configurator.config_file)
         d = dict(config.items(section))
-        if (d.get(line) == "None"):
-            logger.error("No setting found for: " + section + " : " + line)
         return d.get(line)
