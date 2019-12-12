@@ -18,7 +18,6 @@ def waitForEventAndDownloadImage():
 
     while True:
         data = server_sock.recvfrom(1024)
-
         try:
             message = data[0].decode()
 
