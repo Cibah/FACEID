@@ -50,7 +50,7 @@ def findQR(pathToImage):
         isQR = True
         qrkey = barcodeData
     if not (isQR):
-        print("No Code")
+        logger.info("No QR-Code found")
     result = (isQR, qrkey)
     return result
 

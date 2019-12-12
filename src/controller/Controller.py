@@ -22,7 +22,6 @@ def main():
     qr_register = Configurator.get("machine_learning", "qr_register_key")
     qr_unregister = Configurator.get("machine_learning", "qr_unregister_key")
 
-    #TODO: Check Keep-alive of doorbird
     while True:
         image = waitForEventAndDownloadImage()
         qrtuple = findQR(image)
@@ -30,6 +29,7 @@ def main():
         if qrtuple[0]:
             if qrtuple[1] == qr_register:
                 # Danalock.open()
+                logger.info('Register face')
                 currentdate = datetime.datetime.now().timestamp()
                 file_path_partial = Configurator.get("data", "data_path_known_faces")
                 file_path = file_path_partial + str(currentdate) + '.jpg'
@@ -40,6 +40,7 @@ def main():
                     logger.error("No Face found in registering image " + image)
                 # ml.load_known_faces()
             elif qrtuple[1] == qr_unregister:
+                logger.info('Deregister face')
                 result = ml.check_face(image)
                 if result[0]:
                     # find face in known faces and delete it
@@ -52,11 +53,11 @@ def main():
             person_known = ml.check_face(image)
             if person_known:
                 # open door
-                logger.debug("Open the door for authorised person...")
+                logger.info("Open the door for authorised person...")
                 openDoor()
             else:
                 # do not open door
-                logger.debug("No access!")
+                logger.info("No access!")
                 failed_access += 1
                 if failed_access > int(Configurator.get("general", "max_num_of_failed_access")):
                     sendMail("5 failed attempts to access", image)
