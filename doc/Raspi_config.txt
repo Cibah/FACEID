@@ -1,0 +1,22 @@
+Raspberry Pi 4
+Model B 4GB RAM
+
+OS: Raspbian Buster Lite 4.19
+
+Hostname: faceidPi.local
+ID: pi
+Pwd: faceID1234
+
+Was dadrauf schon insalliert ist und funktionniert:
+  - git 
+    --> Projekt FACEID
+  - face recognation 
+    --> dlib
+    --> face_recognationace
+  - barcode 
+    --> zbar
+    --> pyzbar
+    --> opencv
+  - python3
+  - openhab
+  - PIL (Python Image Library

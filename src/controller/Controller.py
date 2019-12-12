@@ -30,6 +30,7 @@ def main():
         if qrtuple[0]:
             if qrtuple[1] == qr_register:
                 # Danalock.open()
+                logger.info('Register face')
                 currentdate = datetime.datetime.now().timestamp()
                 file_path_partial = Configurator.get("data", "data_path_known_faces")
                 file_path = file_path_partial + str(currentdate) + '.jpg'
@@ -49,15 +50,16 @@ def main():
                         sendMail("Remove known face!", result[1])
                     else:
                         sendMail("Wanted to remove a known face, but could not find the regarding face!", image)
+
         else:
             person_known = ml.check_face(image)
-            if len(person_known) != 0:
+            if person_known:
                 # open door
-                logger.debug("Open the door for authorised person.")
+                logger.info("Open the door for authorised person...")
                 openDoor()
             else:
                 # do not open door
-                logger.debug("No access!")
+                logger.info("No access!")
                 failed_access += 1
                 if failed_access > int(Configurator.get("general", "max_num_of_failed_access")):
                     sendMail("5 failed attempts to access", image)
