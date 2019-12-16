@@ -22,6 +22,7 @@ def main():
     qr_register = Configurator.get("machine_learning", "qr_register_key")
     qr_unregister = Configurator.get("machine_learning", "qr_unregister_key")
 
+    #TODO: Check Keep-alive of doorbird
     while True:
         image = waitForEventAndDownloadImage()
         qrtuple = findQR(image)
@@ -36,19 +37,21 @@ def main():
                 if crop(image, file_path):
                     ml.load_new_face(file_path)
                     sendMail("Add Known Face", [image])
+                    openDoor()
                 else:
                     logger.error("No Face found in registering image " + image)
                 # ml.load_known_faces()
             elif qrtuple[1] == qr_unregister:
-                logger.info('Deregister face')
-                result = ml.check_face(image)
-                if result[0]:
-                    # find face in known faces and delete it
-                    sendMail("Remove known face!", [result[1]])
-                    os.remove(result[1])
-                    ml.load_known_faces()
-                else:
-                    sendMail("Wanted to remove a known face, but could not find the regarding face!", image)
+                results = ml.check_face(image)
+                for result in results:
+                    if result[0]:
+                        # find face in known faces and delete it
+                        os.remove(result[1])
+                        ml.load_known_faces()
+                        sendMail("Remove known face!", result[1])
+                    else:
+                        sendMail("Wanted to remove a known face, but could not find the regarding face!", image)
+
         else:
             person_known = ml.check_face(image)
             if person_known:
