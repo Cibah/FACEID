@@ -1,0 +1,11 @@
+Package: plsmonitor
+Version: 0.1.16-7
+Architecture: all
+Maintainer: Pyramid Computer GmbH <pls-support@pyramid.de>
+Installed-Size: 3683
+Depends: libcurlpp0, gawk
+Recommends: 
+Section: admin
+Priority: extra
+Homepage: https://www.thepuck.de
+Description: The Checker for the pls system. Sends information to the monitoring.

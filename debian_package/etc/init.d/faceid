@@ -1,0 +1,47 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          plsmonitor
+# Required-Start:
+# Required-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: PLSMonitor Startup/Monitoring Script
+### END INIT INFO
+
+dt=$(date '+%d.%m.%Y %H:%M:%S');
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin
+
+mkdir -p /var/log/pls
+exec >> /var/log/pls/plsmonitor.log 2>&1
+
+case "$1" in
+  start)
+    echo "$dt: Exec plsmonitor with 'start' command"
+
+    if ! pgrep "PLSMonitor" > /dev/null
+    then
+      python3 /opt/faceid/controller/controller.py
+    fi
+    sleep 1
+    exit 0
+  ;;
+  stop)
+    echo "$dt: Exec plsmonitor with 'stop' command"
+    sudo pkill --signal 2 PLSMonitor
+    exit 0
+    ;;
+  restart)
+    echo "$dt: Exec plsmonitor with 'restart' command"
+    sudo pkill --signal 2 PLSMonitor
+    sleep 5
+    if ! pgrep "PLSMonitor" > /dev/null
+    then
+    fi
+    sleep 1
+    exit 0
+  ;;
+  *)
+    echo "$dt: /etc/init.d/plsmonitor {start|stop}"
+    exit 1
+    ;;
+esac
