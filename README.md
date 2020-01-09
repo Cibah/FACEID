@@ -2,6 +2,15 @@
 ## Basierend auf:
 https://github.com/ageitgey/face_recognition
 
+
+Zum Erstellen des Packages im Ordner *FACEID*:
+
+`python3 setup.py sdist bdist_wheel`
+
+Zum Installieren des Packages (im Ordner *dist*):
+
+`pip install FACEID-1.0.0.tar.gz`
+
 ## doc - Projektdateien, Projektmanagement, Projektdokumentation
 
 ## lib - Bibliotheken für die Code-Implementierung

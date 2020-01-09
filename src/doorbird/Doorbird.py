@@ -1,7 +1,10 @@
+# -*- coding: utf-8 -*-
+
 import binascii
 import socket
 import urllib.request
 import datetime
+import os
 from src.config.Configurator import Configurator as config
 from src.log.Logger import logger
 
@@ -45,7 +48,9 @@ def downloadImage():
     logger.debug("sending http request...")
     currentdate = datetime.datetime.now().timestamp()
     filepath = config.get("data", "data_path_unknown_faces")
-    filename = filepath + str(currentdate) + '.jpg'
+    path = os.path.dirname(os.path.abspath(__file__))
+    final = path + '/..' + filepath
+    filename = final + str(currentdate) + '.jpg'
     urllib.request.URLopener().retrieve(door_bird_url, filename)
     return filename
 

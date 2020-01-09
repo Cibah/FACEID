@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-import lib.face_recognition.face_recognition as face_recognition
+import face_recognition as face_recognition
 from src.config.Configurator import Configurator
 from src.incidents.Mail import sendMail
 from src.log.Logger import logger
@@ -15,7 +15,11 @@ class FaceML:
     time1 = datetime.now()
 
     def __init__(self):
-        self.path = Configurator.get("data", "data_path_known_faces")
+        config = Configurator.get("data", "data_path_known_faces")
+        path = os.path.dirname(os.path.abspath(__file__))
+        final = path + '/..' + config
+        logger.warn(final)
+        self.path = final
         self.load_known_faces()
 
     def load_known_faces(self):
@@ -65,6 +69,7 @@ class FaceML:
         unknown_face_encoding = []
         time1 = datetime.now()
         logger.info("Checking unknown face")
+        logger.warn(image)
         faces = []
         try:
             unknown_image = face_recognition.load_image_file(image)

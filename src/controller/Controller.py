@@ -1,12 +1,17 @@
+import sys
+import os.path
+
+sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
+
 import datetime
 import os
+from src.machine_learning.Cropper import crop
+from src.machine_learning.FaceML import FaceML
 from src.config.Configurator import Configurator
 from src.danalock.Danalock import openDoor, lockDoor
 from src.doorbird.Doorbird import waitForEventAndDownloadImage
 from src.incidents.Mail import sendMail
 from src.log.Logger import logger
-from src.machine_learning.Cropper import crop
-from src.machine_learning.FaceML import FaceML
 from src.machine_learning.barcode_scanner import findQR
 
 version = "0.0.1"
@@ -33,7 +38,10 @@ def main():
                 logger.info('Register face')
                 currentdate = datetime.datetime.now().timestamp()
                 file_path_partial = Configurator.get("data", "data_path_known_faces")
-                file_path = file_path_partial + str(currentdate) + '.jpg'
+                path = os.path.dirname(os.path.abspath(__file__))
+                final = path + '/..' + file_path_partial
+                file_path = final + str(currentdate) + '.jpg'
+                logger.warn(file_path)
                 if crop(image, file_path):
                     ml.load_new_face(file_path)
                     sendMail("Add Known Face", [image])
@@ -42,13 +50,14 @@ def main():
                     logger.error("No Face found in registering image " + image)
                 # ml.load_known_faces()
             elif qrtuple[1] == qr_unregister:
+                logger.warn(image)
                 results = ml.check_face(image)
                 for result in results:
-                    if result[0]:
+                    if result:
                         # find face in known faces and delete it
-                        os.remove(result[1])
+                        sendMail("Remove known face!", [result])
+                        os.remove(result)
                         ml.load_known_faces()
-                        sendMail("Remove known face!", result[1])
                     else:
                         sendMail("Wanted to remove a known face, but could not find the regarding face!", image)
 

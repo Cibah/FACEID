@@ -1,6 +1,5 @@
 from PIL import Image
-import face_recognition
-import lib.face_recognition.face_recognition as face_recognition
+import face_recognition as face_recognition
 from src.log.Logger import logger
 
 
