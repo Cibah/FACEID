@@ -8,6 +8,7 @@ import os
 from src.incidents.Mail import sendMail
 from src.config.Configurator import Configurator as config
 from src.log.Logger import logger
+import select
 
 
 def waitForEventAndDownloadImage():
@@ -16,12 +17,21 @@ def waitForEventAndDownloadImage():
     udp_port = config.get("doorbird", "udp_port_two")
     server_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     server_sock.bind((udp_address, int(udp_port)))
+    server_sock.settimeout(5)
     logger.info("UDP service started on address: {} and port: {}".format(udp_address, udp_port))
     old_message = ""
     old_event = ""
 
     while True:
-        data = server_sock.recvfrom(1024)
+
+        try:
+            data = server_sock.recvfrom(1024)
+        except:
+            # TImeout: No Keep Alive Packets
+            sendMail("No KeepAlive Pakcets from Doorbird! Check your Connection")
+            logger.error("No KeepAlive Pakcets from Doorbird! Check your Connection")
+            continue
+
         try:
             message = data[0].decode()
 
