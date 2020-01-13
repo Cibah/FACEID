@@ -8,6 +8,9 @@ from src.log.Logger import logger
 
 
 def sendMail(content, files=None):
+    if str(config.get("mail", "smpt_use")) != "true":
+        return
+
     s = smtplib.SMTP(host=config.get("mail", "smpt_host"), port=config.get("mail", "smtp_port"))
     s.starttls()
     logger.debug("Log in to " + config.get("mail", "smpt_host") + " for sending e-mail")
