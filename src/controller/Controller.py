@@ -31,6 +31,9 @@ def main():
     while True:
         image = waitForEventAndDownloadImage()
         qrtuple = findQR(image)
+        if image == "ERROR":
+            logger.error("No Image was downloaded from the Doorbird")
+            continue
 
         if qrtuple[0]:
             if qrtuple[1] == qr_register:

@@ -5,6 +5,7 @@ import socket
 import urllib.request
 import datetime
 import os
+from src.incidents.Mail import sendMail
 from src.config.Configurator import Configurator as config
 from src.log.Logger import logger
 
@@ -37,7 +38,6 @@ def waitForEventAndDownloadImage():
                 logger.info("Message: An event has occured!")
                 old_event = event
                 return downloadImage()
-
             old_event = event
 
 
@@ -51,6 +51,9 @@ def downloadImage():
     path = os.path.dirname(os.path.abspath(__file__))
     final = path + '/..' + filepath
     filename = final + str(currentdate) + '.jpg'
-    urllib.request.URLopener().retrieve(door_bird_url, filename)
-    return filename
-
+    try:
+        urllib.request.URLopener().retrieve(door_bird_url, filename)
+        return filename
+    except:
+        sendMail("Doorbird not available!: " + str(door_bird_url))
+        return "ERROR"
