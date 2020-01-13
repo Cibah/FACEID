@@ -16,7 +16,7 @@ def waitForEventAndDownloadImage():
     udp_port = config.get("doorbird", "udp_port_two")
     server_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     server_sock.bind((udp_address, int(udp_port)))
-    server_sock.settimeout(5)
+    server_sock.settimeout(10)
     logger.info("UDP service started on address: {} and port: {}".format(udp_address, udp_port))
     old_message = ""
     old_event = ""

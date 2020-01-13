@@ -27,7 +27,6 @@ def main():
     qr_register = Configurator.get("machine_learning", "qr_register_key")
     qr_unregister = Configurator.get("machine_learning", "qr_unregister_key")
 
-    #TODO: Check Keep-alive of doorbird
     while True:
         image = waitForEventAndDownloadImage()
         qrtuple = findQR(image)
