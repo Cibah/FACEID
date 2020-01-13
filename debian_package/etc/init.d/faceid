@@ -1,47 +1,45 @@
 #!/bin/sh
 ### BEGIN INIT INFO
-# Provides:          plsmonitor
+# Provides:          faceid
 # Required-Start:
 # Required-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: PLSMonitor Startup/Monitoring Script
+# Short-Description: FaceID Startup/Monitoring Script
 ### END INIT INFO
 
 dt=$(date '+%d.%m.%Y %H:%M:%S');
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/opt/bin
 
-mkdir -p /var/log/pls
-exec >> /var/log/pls/plsmonitor.log 2>&1
+exec >> /var/log/faceid.log 2>&1
 
 case "$1" in
   start)
-    echo "$dt: Exec plsmonitor with 'start' command"
+    echo "$dt: Exec faceid with 'start' command"
 
-    if ! pgrep "PLSMonitor" > /dev/null
+    if ! ps aux | grep "python3 /opt/faceid/controller/Controller.py" | awk '{print $2}' | head -n 1 > /dev/null
     then
-      python3 /opt/faceid/controller/controller.py
+      python3 /opt/faceid/controller/Controller.py &
     fi
     sleep 1
     exit 0
   ;;
   stop)
-    echo "$dt: Exec plsmonitor with 'stop' command"
-    sudo pkill --signal 2 PLSMonitor
+    echo "$dt: Exec faceid with 'stop' command"
+    pid=$(ps aux | grep "python3 /opt/faceid/controller/Controller.py" | awk '{print $2}' | head -n 1)
+    sudo kill --signal 2 $pid
     exit 0
     ;;
   restart)
-    echo "$dt: Exec plsmonitor with 'restart' command"
-    sudo pkill --signal 2 PLSMonitor
-    sleep 5
-    if ! pgrep "PLSMonitor" > /dev/null
-    then
-    fi
-    sleep 1
+    echo "$dt: Exec faceid with 'restart' command"
+    pid=$(ps aux | grep "python3 /opt/faceid/controller/Controller.py" | awk '{print $2}' | head -n 1)
+    sudo kill --signal 2 $pid
+    sleep 2
+    python3 /opt/faceid/controller/Controller.py &
     exit 0
   ;;
   *)
-    echo "$dt: /etc/init.d/plsmonitor {start|stop}"
+    echo "$dt: /etc/init.d/faceid {start|stop}"
     exit 1
     ;;
 esac

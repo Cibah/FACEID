@@ -1,8 +1,6 @@
 import sys
 import os.path
-
-sys.path.append(os.path.join(os.path.dirname(__file__), '../..'))
-
+import signal
 import datetime
 import os
 from src.machine_learning.Cropper import crop
@@ -15,6 +13,10 @@ from src.log.Logger import logger
 from src.machine_learning.barcode_scanner import findQR
 
 version = "0.0.1"
+
+
+def signal_handler(signal, frame):
+    sys.exit(0)
 
 
 def main():
@@ -79,4 +81,5 @@ def main():
 
 
 if __name__ == '__main__':
+    signal.signal(signal.SIGINT, signal_handler)
     main()

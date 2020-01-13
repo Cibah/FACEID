@@ -16,8 +16,7 @@ class FaceML:
 
     def __init__(self):
         config = Configurator.get("data", "data_path_known_faces")
-        path = os.path.dirname(os.path.abspath(__file__))
-        final = path + '/..' + config
+        final = config
         logger.warn(final)
         self.path = final
         self.load_known_faces()

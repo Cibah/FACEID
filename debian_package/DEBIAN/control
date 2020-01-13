@@ -1,11 +1,11 @@
-Package: plsmonitor
-Version: 0.1.16-7
+Package: faceid
+Version: 1.0
 Architecture: all
-Maintainer: Pyramid Computer GmbH <pls-support@pyramid.de>
+Maintainer: Artur Dick <artur.dick@hs-furtwangen.de>
 Installed-Size: 3683
-Depends: libcurlpp0, gawk
-Recommends: 
+Depends: python3-pip, cmake, python-zbar, libsm6, libxext6, libxrender-dev
+Recommends:
 Section: admin
 Priority: extra
-Homepage: https://www.thepuck.de
-Description: The Checker for the pls system. Sends information to the monitoring.
+Homepage: https://www.hs-furtwangen.de
+Description: FaceIdentification and Door Opening Server Sofware.
