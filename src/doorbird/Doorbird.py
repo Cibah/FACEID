@@ -8,7 +8,6 @@ import os
 from src.incidents.Mail import sendMail
 from src.config.Configurator import Configurator as config
 from src.log.Logger import logger
-import select
 
 
 def waitForEventAndDownloadImage():
@@ -49,7 +48,6 @@ def waitForEventAndDownloadImage():
                 old_event = event
                 return downloadImage()
             old_event = event
-
 
 
 def downloadImage():
