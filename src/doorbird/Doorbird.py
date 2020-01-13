@@ -1,7 +1,11 @@
+# -*- coding: utf-8 -*-
+
 import binascii
 import socket
 import urllib.request
 import datetime
+import os
+from src.incidents.Mail import sendMail
 from src.config.Configurator import Configurator as config
 from src.log.Logger import logger
 
@@ -12,12 +16,21 @@ def waitForEventAndDownloadImage():
     udp_port = config.get("doorbird", "udp_port_two")
     server_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     server_sock.bind((udp_address, int(udp_port)))
+    server_sock.settimeout(10)
     logger.info("UDP service started on address: {} and port: {}".format(udp_address, udp_port))
     old_message = ""
     old_event = ""
 
     while True:
-        data = server_sock.recvfrom(1024)
+
+        try:
+            data = server_sock.recvfrom(1024)
+        except:
+            # TImeout: No Keep Alive Packets
+            sendMail("No KeepAlive Pakcets from Doorbird! Check your Connection")
+            logger.error("No KeepAlive Pakcets from Doorbird! Check your Connection")
+            continue
+
         try:
             message = data[0].decode()
 
@@ -34,9 +47,7 @@ def waitForEventAndDownloadImage():
                 logger.info("Message: An event has occured!")
                 old_event = event
                 return downloadImage()
-
             old_event = event
-
 
 
 def downloadImage():
@@ -45,7 +56,12 @@ def downloadImage():
     logger.debug("sending http request...")
     currentdate = datetime.datetime.now().timestamp()
     filepath = config.get("data", "data_path_unknown_faces")
-    filename = filepath + str(currentdate) + '.jpg'
-    urllib.request.URLopener().retrieve(door_bird_url, filename)
-    return filename
-
+    path = os.path.dirname(os.path.abspath(__file__))
+    final = path + '/..' + filepath
+    filename = final + str(currentdate) + '.jpg'
+    try:
+        urllib.request.URLopener().retrieve(door_bird_url, filename)
+        return filename
+    except:
+        sendMail("Doorbird not available!: " + str(door_bird_url))
+        return "ERROR"
