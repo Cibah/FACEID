@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+# Benutzer hinzufügen
+# Ordner erstellen
+# Abhängigkeiten installieren
+useradd -M faceid
+
+chown -R faceid:faceid /opt/faceid
+chmod +x /opt/faceid/faceid.py
+pip3 install image face_recognition opencv-python imutils pyzbar requests
+update-rc.d faceid defaults
+/etc/init.d/faceid start
+# anpassen der Dateiberechtigungen

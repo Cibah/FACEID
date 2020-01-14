@@ -3,12 +3,10 @@ import os
 from pathlib import Path
 
 class Configurator:
-    #cwd = os.getcwd()
-    #parent_dir = Path(cwd).parent.parent
-    config_path = os.path.dirname(os.path.abspath(__file__)) #os.path.abspath(str(parent_dir))
+    # cwd = os.getcwd()
+    # parent_dir = Path(cwd).parent.parent
+    config_file = '/etc/faceid.conf'
 
-    file = '/config.ini'
-    config_file = config_path + file
 
     @staticmethod
     def get_config(section):

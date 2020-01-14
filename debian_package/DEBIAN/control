@@ -1,0 +1,11 @@
+Package: faceid
+Version: 1.0
+Architecture: all
+Maintainer: Artur Dick <artur.dick@hs-furtwangen.de>
+Installed-Size: 3683
+Depends: python3-pip, cmake, python-zbar, libsm6, libxext6, libxrender-dev
+Recommends:
+Section: admin
+Priority: extra
+Homepage: https://www.hs-furtwangen.de
+Description: FaceIdentification and Door Opening Server Sofware.
