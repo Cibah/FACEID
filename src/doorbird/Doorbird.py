@@ -56,12 +56,11 @@ def downloadImage():
     logger.debug("sending http request...")
     currentdate = datetime.datetime.now().timestamp()
     filepath = config.get("data", "data_path_unknown_faces")
-    path = os.path.dirname(os.path.abspath(__file__))
-    final = path + '/..' + filepath
-    filename = final + str(currentdate) + '.jpg'
+    filename = filepath + str(currentdate) + '.jpg'
     try:
         urllib.request.URLopener().retrieve(door_bird_url, filename)
         return filename
     except:
         sendMail("Doorbird not available!: " + str(door_bird_url))
+        logger.debug("Doorbird not available: ")
         return "ERROR"

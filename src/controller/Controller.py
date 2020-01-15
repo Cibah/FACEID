@@ -41,9 +41,7 @@ def main():
                 # Danalock.open()
                 logger.info('Register face')
                 currentdate = datetime.datetime.now().timestamp()
-                file_path_partial = Configurator.get("data", "data_path_known_faces")
-                path = os.path.dirname(os.path.abspath(__file__))
-                final = path + '/..' + file_path_partial
+                final = Configurator.get("data", "data_path_known_faces")
                 file_path = final + str(currentdate) + '.jpg'
                 logger.warn(file_path)
                 if crop(image, file_path):
