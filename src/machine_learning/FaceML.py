@@ -44,7 +44,7 @@ class FaceML:
                 except IOError:
                     logger.error("Cant open the face file " + face)
                     # sendMail("No Face found in file", "self.path + face")
-        logger.info("Loaded all " + str(len(self.known_faces)) + " faces in " + str(
+        logger.info("Loaded " + str(len(self.known_faces)) + " faces in " + str(
             datetime.now() - time1) + " seconds")
 
     def load_new_face(self, image):

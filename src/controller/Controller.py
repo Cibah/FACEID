@@ -12,7 +12,7 @@ from src.incidents.Mail import sendMail
 from src.log.Logger import logger
 from src.machine_learning.barcode_scanner import findQR
 
-version = "1.0.3"
+version = "1.0.4b"
 
 
 def signal_handler(signal, frame):
@@ -43,7 +43,6 @@ def main():
                 currentdate = datetime.datetime.now().timestamp()
                 final = Configurator.get("data", "data_path_known_faces")
                 file_path = final + str(currentdate) + '.jpg'
-                logger.warn(file_path)
                 if crop(image, file_path):
                     ml.load_new_face(file_path)
                     sendMail("Add Known Face", [image])
@@ -54,7 +53,6 @@ def main():
                 # ml.load_known_faces()
             elif qrtuple[1] == qr_unregister:
                 logger.info('Unregister face')
-                logger.warn(image)
                 results = ml.check_face(image)
                 for result in results:
                     if result:
