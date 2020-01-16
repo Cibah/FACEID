@@ -32,16 +32,17 @@ class FaceML:
             logger.debug("Loading face " + face)
             if face.endswith(".jpg"):
                 face_image = face_recognition.load_image_file(self.path + face)
+                logger.debug("Checking File for faces: " + self.path + face)
                 self.filelist.append(self.path + face)
                 try:
                     encodings = face_recognition.face_encodings(face_image)
                     for face_encode in encodings:
                         self.known_faces.append(face_encode)
                 except IndexError:
-                    logger.error("No faces found in " + self.path + face)
+                    logger.error("No faces found in " + face)
                     # sendMail("No Face found in file", "self.path + face")
                 except IOError:
-                    logger.error("Cant open the face file " + self.path + face)
+                    logger.error("Cant open the face file " + face)
                     # sendMail("No Face found in file", "self.path + face")
         logger.info("Loaded all " + str(len(self.known_faces)) + " faces in " + str(
             datetime.now() - time1) + " seconds")

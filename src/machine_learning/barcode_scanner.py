@@ -23,6 +23,9 @@ def greyscale(image, iThresh):
     return cv2.threshold(image, iThresh, 255, cv2.THRESH_BINARY)[1]
 
 def findQR(pathToImage):
+    if (pathToImage == "ERROR"):
+        logger.error("Image not found! " + pathToImage)
+        return False
     isQR = False
     qrkey = ""
     logger.debug("Checking QR Codes in " + pathToImage)

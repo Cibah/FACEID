@@ -48,15 +48,17 @@ def waitForEventAndDownloadImage():
                 old_event = event
                 return downloadImage()
             old_event = event
+    # server_sock.close()
 
 
 def downloadImage():
     # request picture from API and save it
     door_bird_url = config.get("doorbird", "door_bird_url")
-    logger.debug("sending http request...")
     currentdate = datetime.datetime.now().timestamp()
     filepath = config.get("data", "data_path_unknown_faces")
     filename = filepath + str(currentdate) + '.jpg'
+    logger.debug("sending http request to: " + door_bird_url + " and saving to " + filename)
+
     try:
         urllib.request.URLopener().retrieve(door_bird_url, filename)
         return filename
