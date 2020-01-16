@@ -21,7 +21,7 @@ def signal_handler(signal, frame):
 
 def main():
     # Login for Events
-    logger.debug("FaceID by HFU v")
+    logger.info("FaceID by HFU v" + version)
     failed_access = 0
     # init
     ml = FaceML()
@@ -48,6 +48,7 @@ def main():
                     ml.load_new_face(file_path)
                     sendMail("Add Known Face", [image])
                     openDoor()
+                    failed_access = 0
                 else:
                     logger.error("No Face found in registering image " + image)
                 # ml.load_known_faces()
@@ -70,6 +71,7 @@ def main():
                 # open door
                 logger.info("Open the door for authorised person...")
                 openDoor()
+                failed_access = 0
             else:
                 # do not open door
                 logger.info("No access!")
