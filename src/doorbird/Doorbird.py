@@ -16,7 +16,7 @@ def waitForEventAndDownloadImage():
     udp_port = config.get("doorbird", "udp_port_two")
     server_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     server_sock.bind((udp_address, int(udp_port)))
-    server_sock.settimeout(10)
+    server_sock.settimeout(int(config.get("doorbird", "keep_alive_timeout")))
     logger.info("UDP service started on address: {} and port: {}".format(udp_address, udp_port))
     old_message = ""
     old_event = ""
@@ -48,15 +48,17 @@ def waitForEventAndDownloadImage():
                 old_event = event
                 return downloadImage()
             old_event = event
+    # server_sock.close()
 
 
 def downloadImage():
     # request picture from API and save it
     door_bird_url = config.get("doorbird", "door_bird_url")
-    logger.debug("sending http request...")
     currentdate = datetime.datetime.now().timestamp()
     filepath = config.get("data", "data_path_unknown_faces")
     filename = filepath + str(currentdate) + '.jpg'
+    logger.debug("sending http request to: " + door_bird_url + " and saving to " + filename)
+
     try:
         urllib.request.URLopener().retrieve(door_bird_url, filename)
         return filename
