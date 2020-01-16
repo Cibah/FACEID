@@ -12,7 +12,7 @@ from src.incidents.Mail import sendMail
 from src.log.Logger import logger
 from src.machine_learning.barcode_scanner import findQR
 
-version = "1.0.1"
+version = "1.0.2"
 
 
 def signal_handler(signal, frame):
