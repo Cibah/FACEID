@@ -52,6 +52,7 @@ def main():
                     logger.error("No Face found in registering image " + image)
                 # ml.load_known_faces()
             elif qrtuple[1] == qr_unregister:
+                logger.info('Unregister face')
                 logger.warn(image)
                 results = ml.check_face(image)
                 for result in results:
