@@ -26,23 +26,32 @@ def main():
     # init
     ml = FaceML()
 
+	#read qr-codes for registration and deregistration from config
     qr_register = Configurator.get("machine_learning", "qr_register_key")
     qr_unregister = Configurator.get("machine_learning", "qr_unregister_key")
 
+	
     while True:
-        image = waitForEventAndDownloadImage()
-        qrtuple = findQR(image)
+		#wait for doorbird event 
+		image = waitForEventAndDownloadImage()
+        
+		#get QR-code from image
+		qrtuple = findQR(image)
+		
         if image == "ERROR":
             logger.error("No Image was downloaded from the Doorbird")
             continue
 
         if qrtuple[0]:
+			#check if qr-code from image equals register code
             if qrtuple[1] == qr_register:
                 # Danalock.open()
                 logger.info('Register face')
                 currentdate = datetime.datetime.now().timestamp()
                 final = Configurator.get("data", "data_path_known_faces")
                 file_path = final + str(currentdate) + '.jpg'
+				
+				#crop face from image
                 if crop(image, file_path):
                     ml.load_new_face(file_path)
                     sendMail("Add Known Face", [image])
@@ -51,6 +60,7 @@ def main():
                 else:
                     logger.error("No Face found in registering image " + image)
                 # ml.load_known_faces()
+			#check if qr-code from image equals deregistration code
             elif qrtuple[1] == qr_unregister:
                 logger.info('Unregister face')
                 results = ml.check_face(image)

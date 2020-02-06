@@ -13,11 +13,12 @@ from src.log.Logger import logger
 from PIL import ImageEnhance
 
 
+#upscaling the picture
 def upscale(image, scale):
     height, width = image.shape[:2]
     return cv2.resize(image, (int(width * scale), int(height * scale)), interpolation=cv2.INTER_LINEAR)
 
-
+#greyscaling the picture
 def greyscale(image, iThresh):
     # return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     return cv2.threshold(image, iThresh, 255, cv2.THRESH_BINARY)[1]
@@ -60,12 +61,3 @@ def findQR(pathToImage):
 
 processed = 0
 found = 0
-# print(findQR("../../img/QrCodes/test5_crop.jpg"))
-
-
-# for face in os.listdir("../../img/QrCodes/"):
-#    if face.endswith(".jpg") or face.endswith(".png"):
-#        processed += 1
-#        if ((findQR("../../img/QrCodes/" + face))[0] == True):
-#            found += 1
-# print(str(found) + "/" + str(processed))
