@@ -25,12 +25,13 @@ def waitForEventAndDownloadImage():
         try:
             data = server_sock.recvfrom(1024)
         except:
-            # TImeout: No Keep Alive Packets
+            # Timeout: No Keep Alive Packets
             sendMail("No KeepAlive Pakcets from Doorbird! Check your Connection")
             logger.error("No KeepAlive Pakcets from Doorbird! Check your Connection")
             continue
 
         try:
+			#read received udp data
             message = data[0].decode()
 
             if message != old_message:
