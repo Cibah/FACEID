@@ -17,7 +17,7 @@ class FaceML:
     def __init__(self):
         config = Configurator.get("data", "data_path_known_faces")
         final = config
-        logger.warn(final)
+        # logger.warn(final)
         self.path = final
         self.load_known_faces()
 

@@ -4,7 +4,6 @@ import binascii
 import socket
 import urllib.request
 import datetime
-import os
 from src.incidents.Mail import sendMail
 from src.config.Configurator import Configurator as config
 from src.log.Logger import logger
@@ -13,7 +12,7 @@ from src.log.Logger import logger
 def waitForEventAndDownloadImage():
     # bind socket
     udp_address = config.get("doorbird", "udp_ip_address")
-    udp_port = config.get("doorbird", "udp_port_two")
+    udp_port = config.get("doorbird", "udp_port")
     server_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     server_sock.bind((udp_address, int(udp_port)))
     server_sock.settimeout(int(config.get("doorbird", "keep_alive_timeout")))
